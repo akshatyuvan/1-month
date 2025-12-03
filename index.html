@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Happy One-Month Anniversary 💕</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at top, #ffe6f2 0, #fdf6ff 35%, #f7e4ff 70%, #fdd9e5 100%);
+      color: #2b102b;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 1100px;
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: 26px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
+      overflow: hidden;
+      position: relative;
+      padding: 26px 24px 60px; /* extra bottom for flower & hearts */
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ribbon {
+      position: absolute;
+      top: 18px;
+      left: -40px;
+      background: linear-gradient(135deg, #ff6fa8, #ff3c7a);
+      color: #fff;
+      padding: 10px 140px;
+      width: auto;
+      transform: rotate(-15deg);
+      font-weight: 700;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      z-index: 2;
+    }
+
+    /* FRAME LAYOUT – photos top/left/right around center */
+    .layout {
+      flex: 1;
+      display: grid;
+      grid-template-areas:
+        "top top top"
+        "left center right";
+      grid-template-columns: 1.1fr 1.4fr 1.1fr;
+      grid-template-rows: auto 1fr;
+      gap: 14px;
+      align-items: center;
+      justify-items: center;
+      margin-top: 18px;
+    }
+
+    .top-photos   { grid-area: top;   display:flex; gap:10px; flex-wrap:wrap; justify-content:center; }
+    .left-photos  { grid-area: left;  display:flex; flex-direction:column; gap:10px; align-items:center; }
+    .right-photos { grid-area: right; display:flex; flex-direction:column; gap:10px; align-items:center; }
+
+    .center {
+      grid-area: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 18px;
+    }
+
+    .bubble {
+      background: #fff4ff;
+      border-radius: 26px;
+      padding: 20px 26px;
+      box-shadow: 0 10px 26px rgba(0,0,0,0.12);
+      max-width: 520px;
+      text-align: center;
+      position: relative;
+      border: 2px solid #ffb4d1;
+  margin-top: -100px; /* shift the text box up */
+    }
+
+    .bubble:after {
+      content: "";
+      position: absolute;
+      bottom: -18px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 18px 18px 0;
+      border-style: solid;
+      border-color: #ffb4d1 transparent;
+    }
+
+    .bubble:before {
+      content: "";
+      position: absolute;
+      bottom: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 14px 14px 0;
+      border-style: solid;
+      border-color: #fff4ff transparent;
+    }
+
+    .main-text {
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: #5e305e;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 16px;
+      margin-top: 18px;
+      position: relative;
+      min-height: 46px;
+      width: 100%;
+      max-width: 360px; /* lane for yes + running no */
+    }
+
+    button {
+      cursor: pointer;
+      border-radius: 999px;
+      border: none;
+      padding: 10px 24px;
+      font-size: 0.98rem;
+      font-weight: 600;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+      white-space: nowrap;
+    }
+
+    #yesBtn {
+      background: linear-gradient(135deg, #ff6fa8, #ff3c7a);
+      color: white;
+      box-shadow: 0 8px 16px rgba(255, 64, 129, 0.3);
+      position: relative;
+      z-index: 2;
+    }
+    #yesBtn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 22px rgba(255, 64, 129, 0.5);
+    }
+
+    /* No button starts on the right lane, moves ONLY in its lane, never over Yes */
+    #noBtn {
+      background: #f5f0ff;
+      color: #553055;
+      border: 1px solid #e4c1ff;
+      position: absolute;
+      top: 0;
+      left: 70%;     /* initial position */
+      z-index: 1;
+    }
+    #noBtn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(130, 100, 160, 0.3);
+      background: #fceeff;
+    }
+
+    .message {
+      font-size: 0.95rem;
+      color: #4b214b;
+      min-height: 22px;
+      margin-top: 6px;
+    }
+
+    .polaroid {
+      background: #fff;
+      border-radius: 16px;
+      padding: 6px 6px 10px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.16);
+      position: relative;
+      max-width: 150px;
+      width: 100%;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* soft rotations */
+    .polaroid.p1 { transform: rotate(-3deg); }
+    .polaroid.p2 { transform: rotate(2deg); }
+    .polaroid.p3 { transform: rotate(-2deg); }
+    .polaroid.p4 { transform: rotate(3deg); }
+    .polaroid.p5 { transform: rotate(-2deg); }
+    .polaroid.p6 { transform: rotate(2deg); }
+    .polaroid.p7 { transform: rotate(-1deg); }
+    .polaroid.p8 { transform: rotate(3deg); }
+    .polaroid.p9 { transform: rotate(-2deg); }
+    .polaroid.p10 { transform: rotate(2deg); }
+    .polaroid.p11 { transform: rotate(-1deg); }
+
+    .polaroid img {
+      width: 100%;
+      height: auto;
+      background: #f8f0ff;
+      border-radius: 14px;
+      display: block;
+    }
+
+    .polaroid span {
+      display: block;
+      margin-top: 6px;
+      font-size: 0.76rem;
+      text-align: center;
+      color: #9a4f9a;
+    }
+
+    .polaroid:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 14px 30px rgba(0,0,0,0.25);
+    }
+
+    footer {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.7rem;
+      color: #a16aa1;
+      text-align: center;
+    }
+
+    /* Hearts container – full screen */
+    .hearts-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;   /* full screen width */
+      height: 100vh;  /* full screen height */
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 9999;
+    }
+
+    .heart {
+      position: absolute;
+      top: -20px;
+      font-size: 18px;
+      color: #ff2f5b;
+      opacity: 0;
+      /* steady, full-screen fall past the bottom */
+      animation: fall 6.5s linear forwards;
+    }
+
+    @keyframes fall {
+      0%   { transform: translateY(-20px); opacity: 0; }
+      10%  { opacity: 1; }
+      100% { transform: translateY(200vh); opacity: 0; } /* fall past bottom */
+    }
+
+    /* Rose popup – near bottom but not covering footer */
+    .rose-wrapper {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      width: 140px;
+      height: 220px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      pointer-events: none;
+      transition: opacity 0.6s ease, transform 0.6s ease;
+      opacity: 0;
+      z-index: 5;
+    }
+    .rose-wrapper.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .rose-text {
+      position: absolute;
+      bottom: 115px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(35, 9, 35, 0.96);
+      color: #ffe5f2;
+      padding: 8px 18px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      box-shadow: 0 10px 26px rgba(0,0,0,0.38);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.7s ease 0.3s;
+      max-width: 90%;
+      text-align: center;
+      z-index: 6;
+    }
+    .rose-text.show { opacity: 1; }
+
+    .rose { position: relative; width: 90px; height: 200px; }
+    .stem {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      width: 10px;
+      height: 100px;
+      background: linear-gradient(#0f7f3b,#065423);
+      border-radius: 10px;
+      transform: translateX(-50%);
+    }
+    .leaf {
+      position: absolute;
+      width: 38px;
+      height: 20px;
+      background: radial-gradient(circle at 10% 50%, #78d68b, #0d6b32);
+      border-radius: 20px 0 20px 0;
+    }
+    .leaf.left  { left: 10px; bottom: 50px; transform: rotate(-30deg); }
+    .leaf.right { right: 10px; bottom: 70px; transform: rotate(35deg); }
+
+    .bloom {
+      position: absolute;
+      bottom: 130px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 110px;
+      height: 90px;
+    }
+
+    .petal {
+      position: absolute;
+      width: 64px;
+      height: 64px;
+      background: radial-gradient(circle at 30% 20%, #ffd0dd, #ff2359 65%, #b30036);
+      border-radius: 64px 64px 40px 40px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+      transform-origin: 50% 80%;
+      transform: scale(0.15);
+      opacity: 0;
+    }
+
+    .petal.center { top: 18px; left: 23px; }
+    .petal.left   { top: 18px; left: -2px; }
+    .petal.right  { top: 18px; right: -2px; }
+    .petal.back   { top: 0;   left: 23px; }
+
+    .rose-wrapper.show .petal.center { animation: bloom-center 0.9s forwards 0.2s; }
+    .rose-wrapper.show .petal.left   { animation: bloom-left   0.9s forwards 0.35s; }
+    .rose-wrapper.show .petal.right  { animation: bloom-right  0.9s forwards 0.35s; }
+    .rose-wrapper.show .petal.back   { animation: bloom-back   0.9s forwards 0.5s; }
+
+    @keyframes bloom-center { to { transform: scale(1); opacity: 1; } }
+    @keyframes bloom-left   { to { transform: scale(1) rotate(-18deg) translateX(-4px); opacity: 1; } }
+    @keyframes bloom-right  { to { transform: scale(1) rotate(18deg)  translateX(4px);  opacity: 1; } }
+    @keyframes bloom-back   { to { transform: scale(1.05) translateY(-4px); opacity: 1; } }
+
+    .sparkles {
+      position: absolute;
+      top: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 150px;
+      height: 60px;
+      pointer-events: none;
+    }
+    .sparkles span {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.9);
+      animation: sparkle 1.4s infinite ease-in-out;
+    }
+    .sparkles span:nth-child(1){ top:4px;  left:4px;   animation-delay:0s; }
+    .sparkles span:nth-child(2){ top:22px; left:50px;  animation-delay:0.2s; }
+    .sparkles span:nth-child(3){ top:10px; left:110px; animation-delay:0.4s; }
+    .sparkles span:nth-child(4){ top:26px; left:140px; animation-delay:0.6s; }
+    .sparkles span:nth-child(5){ top:40px; left:80px;  animation-delay:0.8s; }
+
+    @keyframes sparkle {
+      0% { transform: scale(0.5); opacity: 0; }
+      40%{ transform: scale(1);   opacity: 1; }
+      100%{transform: scale(0.3) translateY(-18px); opacity: 0;}
+    }
+
+    @media (max-width: 900px) {
+      .layout{
+        grid-template-areas:
+          "top"
+          "center"
+          "left"
+          "right";
+        grid-template-columns: 1fr;
+      }
+      .left-photos, .right-photos {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 650px) {
+      .polaroid{ max-width: 45%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="ribbon">1 Month of Us 💗</div>
+
+    <!-- hearts layer -->
+    <div class="hearts-container" id="heartsContainer"></div>
+
+    <div class="layout">
+      <!-- TOP photos (4) -->
+      <div class="top-photos">
+        <div class="polaroid p1"><img src="IMG_9984.jpg" alt="Green saree back" /><span></span></div>
+        <div class="polaroid p2"><img src="IMG_9981.jpg" alt="Green saree front" /><span></span></div>
+        <div class="polaroid p3"><img src="IMG_9982.jpg" alt="Red dress" /><span></span></div>
+        <div class="polaroid p10"><img src="IMG_9992.jpg" alt="Cream ethnic outfit" /><span></span></div>
+      </div>
+
+      <!-- LEFT photos -->
+      <div class="left-photos">
+        <div class="polaroid p5"><img src="IMG_9986.jpg" alt="Mask filter 1" /><span></span></div>
+        <div class="polaroid p11"><img src="IMG_9994.jpg" alt="Mask filter 2" /><span></span></div>
+        <div class="polaroid p6"><img src="IMG_9987.jpg" alt="Sparkly skirt" /><span></span></div>
+      </div>
+
+      <!-- CENTER: text + buttons -->
+      <div class="center">
+        <div class="bubble">
+          <p class="main-text">
+            Happy one-month anniversary Baby&lt;3<br />
+            We’ve officially tolerated each other for 30 days and I’d happily do it for thousands more. Do you also want to do it?
+          </p>
+        </div>
+        <div class="buttons">
+          <button id="yesBtn">Yes 💕</button>
+          <button id="noBtn">No 🙄</button>
+        </div>
+        <div class="message" id="message"></div>
+      </div>
+
+      <!-- RIGHT photos -->
+      <div class="right-photos">
+        <div class="polaroid p7"><img src="IMG_9990.jpg" alt="Green saree full" /><span></span></div>
+        <div class="polaroid p8"><img src="IMG_9988.jpg" alt="Black top" /><span></span></div>
+        <div class="polaroid p9"><img src="IMG_9989.jpg" alt="Pink t-shirt elevator selfie" /><span></span></div>
+      </div>
+    </div>
+
+    <footer>Made just for you, by your lovely Narcissist🥰😘.</footer>
+
+    <!-- Rose popup INSIDE CARD -->
+    <div class="rose-wrapper" id="roseWrapper">
+      <div class="rose">
+        <div class="sparkles">
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <div class="bloom">
+          <div class="petal back"></div>
+          <div class="petal left"></div>
+          <div class="petal right"></div>
+          <div class="petal center"></div>
+        </div>
+        <div class="stem"></div>
+        <div class="leaf left"></div>
+        <div class="leaf right"></div>
+      </div>
+    </div>
+
+    <div class="rose-text" id="roseText">
+      Flowers for you that your mom won’t question who gave them 🌹
+    </div>
+  </div>
+
+  <script>
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn = document.getElementById("noBtn");
+    const message = document.getElementById("message");
+    const roseWrapper = document.getElementById("roseWrapper");
+    const roseText = document.getElementById("roseText");
+    const heartsContainer = document.getElementById("heartsContainer");
+
+    const noTexts = [
+      "Are you sure?",
+      "Really",
+      "Think again",
+      "Don't be Silly!",
+      "You might regret this",
+      "Last Chance"
+    ];
+    let noClickCount = 0;
+
+    function createHearts() {
+      for (let i = 0; i < 45; i++) {
+        const heart = document.createElement("span");
+        heart.className = "heart";
+        heart.textContent = "❤";
+        heart.style.left = Math.random() * 100 + "%";
+        // delay spread across the whole duration so they appear continuously
+        heart.style.animationDelay = (Math.random() * 6) + "s";
+        // bigger, cute hearts
+        heart.style.fontSize = (26 + Math.random() * 14) + "px";
+        heartsContainer.appendChild(heart);
+        // remove after duration + max delay (6.5s + 6s ≈ 12.5s)
+        setTimeout(() => heart.remove(), 13000);
+      }
+    }
+
+    function randomPositionButton() {
+      const container = yesBtn.parentElement;
+      const containerRect = container.getBoundingClientRect();
+      const yesRect = yesBtn.getBoundingClientRect();
+      const noRect = noBtn.getBoundingClientRect();
+
+      // minX: a bit to the right of the Yes button
+      const minX = (yesRect.right - containerRect.left) + 24;
+      const maxX = containerRect.width - noRect.width - 4;
+
+      const relX = Math.random() * Math.max(maxX - minX, 0) + minX;
+      noBtn.style.left = relX + "px";
+    }
+
+    let heartsInterval = null;
+
+    function startHeartsShower() {
+      createHearts(); // first burst
+      heartsInterval = setInterval(createHearts, 1200); // new hearts every 1.2s
+      // optional: stop after 10s so it doesn't run forever
+      // setTimeout(() => {
+      //   clearInterval(heartsInterval);
+      // }, 10000);
+    }
+
+    yesBtn.addEventListener("click", () => {
+      message.textContent = "Good. You're stuck with me now, no returns, no refunds. 💘";
+      roseWrapper.classList.add("show");
+      roseText.classList.add("show");
+      startHeartsShower();
+      yesBtn.disabled = true;
+      noBtn.disabled = true;
+    });
+
+    noBtn.addEventListener("click", () => {
+      const index = Math.min(noClickCount, noTexts.length - 1);
+      noBtn.textContent = noTexts[index];
+      noClickCount += 1;
+      randomPositionButton();
+
+      if (noClickCount === 1) {
+        message.textContent = "Wow. Hurt. That was fast.";
+      } else if (noClickCount === 2) {
+        message.textContent = "Your options are basically Yes or... also Yes.";
+      } else if (noClickCount >= 3) {
+        message.textContent = "You can chase the button, but you cannot escape me.";
+      }
+    });
+  </script>
+</body>
+</html>
