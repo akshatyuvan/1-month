@@ -37,8 +37,7 @@
       left: -40px;
       background: linear-gradient(135deg, #ff6fa8, #ff3c7a);
       color: #fff;
-      padding: 10px 140px;
-      width: auto;
+      padding: 10px 140px; /* widened so it doesn't cut */
       transform: rotate(-15deg);
       font-weight: 700;
       letter-spacing: 1px;
@@ -84,7 +83,7 @@
       text-align: center;
       position: relative;
       border: 2px solid #ffb4d1;
-  margin-top: -100px; /* shift the text box up */
+      margin-top: -30px; /* lift text box a bit up */
     }
 
     .bubble:after {
@@ -185,6 +184,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      cursor: pointer; /* indicates clickable for lightbox */
     }
 
     /* soft rotations */
@@ -240,7 +240,7 @@
       height: 100vh;  /* full screen height */
       pointer-events: none;
       overflow: hidden;
-      z-index: 9999;
+      z-index: 9000; /* slightly below lightbox */
     }
 
     .heart {
@@ -386,6 +386,27 @@
       100%{transform: scale(0.3) translateY(-18px); opacity: 0;}
     }
 
+    /* LIGHTBOX (big image on click) */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000; /* above hearts & everything */
+      cursor: zoom-out;
+    }
+    .lightbox.show {
+      display: flex;
+    }
+    .lightbox img {
+      max-width: 90vw;
+      max-height: 90vh;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    }
+
     @media (max-width: 900px) {
       .layout{
         grid-template-areas:
@@ -478,6 +499,11 @@
     </div>
   </div>
 
+  <!-- Lightbox overlay -->
+  <div class="lightbox" id="lightbox">
+    <img id="lightboxImg" src="" alt="Preview" />
+  </div>
+
   <script>
     const yesBtn = document.getElementById("yesBtn");
     const noBtn = document.getElementById("noBtn");
@@ -485,12 +511,15 @@
     const roseWrapper = document.getElementById("roseWrapper");
     const roseText = document.getElementById("roseText");
     const heartsContainer = document.getElementById("heartsContainer");
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImg = document.getElementById("lightboxImg");
 
     const noTexts = [
       "Are you sure?",
       "Really",
       "Think again",
       "Don't be Silly!",
+      "Please Reconsider",
       "You might regret this",
       "Last Chance"
     ];
@@ -502,7 +531,7 @@
         heart.className = "heart";
         heart.textContent = "❤";
         heart.style.left = Math.random() * 100 + "%";
-        // delay spread across the whole duration so they appear continuously
+        // delay spread across the duration so they appear continuously
         heart.style.animationDelay = (Math.random() * 6) + "s";
         // bigger, cute hearts
         heart.style.fontSize = (26 + Math.random() * 14) + "px";
@@ -529,12 +558,9 @@
     let heartsInterval = null;
 
     function startHeartsShower() {
+      if (heartsInterval) return; // prevent multiple intervals
       createHearts(); // first burst
-      heartsInterval = setInterval(createHearts, 1200); // new hearts every 1.2s
-      // optional: stop after 10s so it doesn't run forever
-      // setTimeout(() => {
-      //   clearInterval(heartsInterval);
-      // }, 10000);
+      heartsInterval = setInterval(createHearts, 1200); // new hearts every 1.2s (infinite)
     }
 
     yesBtn.addEventListener("click", () => {
@@ -559,6 +585,19 @@
       } else if (noClickCount >= 3) {
         message.textContent = "You can chase the button, but you cannot escape me.";
       }
+    });
+
+    /* LIGHTBOX LOGIC */
+    document.querySelectorAll(".polaroid img").forEach(img => {
+      img.addEventListener("click", () => {
+        lightboxImg.src = img.src;
+        lightbox.classList.add("show");
+      });
+    });
+
+    lightbox.addEventListener("click", () => {
+      lightbox.classList.remove("show");
+      lightboxImg.src = "";
     });
   </script>
 </body>
