@@ -564,13 +564,14 @@
     }
 
     yesBtn.addEventListener("click", () => {
-      message.textContent = "Good. You're stuck with me now, no returns, no refunds. 💘";
-      roseWrapper.classList.add("show");
-      roseText.classList.add("show");
-      startHeartsShower();
-      yesBtn.disabled = true;
-      noBtn.disabled = true;
-    });
+  message.textContent = "Good. You're stuck with me now, no returns, no refunds. 💘";
+  roseWrapper.classList.add("show");
+  roseText.classList.add("show");
+  startHeartsShower();
+  
+  yesBtn.style.display = "none";
+  noBtn.style.display = "none";
+});
 
     noBtn.addEventListener("click", () => {
       const index = Math.min(noClickCount, noTexts.length - 1);
